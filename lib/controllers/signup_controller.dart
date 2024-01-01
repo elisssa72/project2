@@ -64,7 +64,7 @@ class SignupController extends GetxController {
   signup() async {
     var response = await http.post(Uri.parse(baseurl + 'signup.php'), body: {
       "name": nameController.text,
-      "contact": contactController.text,
+      "contact": contactController.text,    //get data from served based on url
       "address": addressController.text,
       "email": emailController.text,
       "password": passwordController.text,

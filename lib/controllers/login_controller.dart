@@ -14,7 +14,7 @@ class LoginController extends GetxController {
   late TextEditingController emailController, passwordController;
 
   @override
-  void onInit() {
+  void onInit() {   // initialize controllers
     // TODO: implement onInit
     super.onInit();
     checkUser();
@@ -25,7 +25,7 @@ class LoginController extends GetxController {
   checkUser() async {
     var user = await SharedPrefs().getUser();
     if (user != null) {
-      Get.offAllNamed(GetRoutes.home);
+      Get.offAllNamed(GetRoutes.home);  //check user and go home if available
     }
   }
 
@@ -34,13 +34,13 @@ class LoginController extends GetxController {
     // TODO: implement onClose
     super.onClose();
     emailController.dispose();
-    passwordController.dispose();
+    passwordController.dispose();  //clean up
   }
 
   checkLogin() {
     if (emailController.text.isEmpty ||
         GetUtils.isEmail(emailController.text) == false) {
-      customSnackbar("Error", "A Valid email is required", "error");
+      customSnackbar("Error", "A Valid email is required", "error");   //check validation
     } else if (passwordController.text.isEmpty) {
       customSnackbar("Error", "Password is required", "error");
     } else {
@@ -50,16 +50,16 @@ class LoginController extends GetxController {
   }
 
   login() async {
-    var response = await http.post(Uri.parse(baseurl + 'login.php'), body: {
+    var response = await http.post(Uri.parse(baseurl + 'login.php'), body: {  //send request based on url
       "email": emailController.text,
       "password": passwordController.text,
     });
 
-    var res = await json.decode(response.body);
+    var res = await json.decode(response.body);   //decodes  the json data to dart since server respond using json
 
     if (res['success']) {
       customSnackbar("Success", res['message'], "success");
-      User user = User.fromJson(res['user']);
+      User user = User.fromJson(res['user']);     //success
       await SharedPrefs().storeUser(json.encode(user));
       Get.offAllNamed(GetRoutes.home);
     } else {

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:todos/models/todo.dart';
@@ -26,20 +25,20 @@ class TodoController extends GetxController {
   }
 
   @override
-  void onClose() {
+  void onClose() {  //It disposes of the TextEditingController instances to avoid memory leaks.
     super.onClose();
 
-    titleController.dispose();
+    titleController.dispose();  //clean up
     descriptionController.dispose();
   }
 
   fetchMyTodos() async {
     var usr = await SharedPrefs().getUser();
-    User user = User.fromJson(json.decode(usr));
+    User user = User.fromJson(json.decode(usr));  //retrieve user info(decode json to dart)
 
     var response = await http
         .post(Uri.parse(baseurl + 'todos.php'), body: {"user_id": user.id});
-    var res = await json.decode(response.body);
+    var res = await json.decode(response.body); //decode to json
 
     if (res['success']) {
       todos = AllTodos.fromJson(res).todo!;
@@ -58,21 +57,21 @@ class TodoController extends GetxController {
     }
 
     filteredTodo = todos.where((todo) {
-      return todo.title!.toLowerCase().contains(val.toLowerCase());
+      return todo.title!.toLowerCase().contains(val.toLowerCase());  //filter acc to lower case
     }).toList();
 
     update();
   }
 
-  addTodo() async {
-    var usr = await SharedPrefs().getUser();
+  addTodo() async {   // add to database
+    var usr = await SharedPrefs().getUser();  //retrieve user info
     User user = User.fromJson(json.decode(usr));
 
     var response = await http.post(Uri.parse(baseurl + 'add_todo.php'), body: {
-      "user_id": user.id,
+      "user_id": user.id,   //checks the user id
       "title": titleController.text,
       "description": descriptionController.text,
-    });
+    }); //send to add.php(title desc and user id)
 
     var res = await json.decode(response.body);
 
