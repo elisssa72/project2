@@ -33,12 +33,12 @@ class TodoController extends GetxController {
   }
 
   fetchMyTodos() async {
-    var usr = await SharedPrefs().getUser();
-    User user = User.fromJson(json.decode(usr));  //retrieve user info(decode json to dart)
+    var usr = await SharedPrefs().getUser();   //might take some time
+    User user = User.fromJson(json.decode(usr));  //retrieve user info(decode json to dart)  //might take some time
 
     var response = await http
         .post(Uri.parse(baseurl + 'todos.php'), body: {"user_id": user.id});
-    var res = await json.decode(response.body); //decode to json
+    var res = await json.decode(response.body); //decode from json to dart
 
     if (res['success']) {
       todos = AllTodos.fromJson(res).todo!;
@@ -50,7 +50,7 @@ class TodoController extends GetxController {
   }
 
   search(String val) {
-    if (val.isEmpty) {
+    if (val.isEmpty) {  //if empty it shows all the list
       filteredTodo = todos;
       update();
       return;
@@ -84,7 +84,7 @@ class TodoController extends GetxController {
       customSnackbar("Error", res['message'], "error");
     }
     update();
-  }
+  }  //take note info and sends them to php which insert to the table
 
   editTodo(id) async {
     var usr = await SharedPrefs().getUser();
@@ -109,7 +109,7 @@ class TodoController extends GetxController {
     }
     update();
   }
-
+//go to edit which update
   deleteTodo(id) async {
     var usr = await SharedPrefs().getUser();
     User user = User.fromJson(json.decode(usr));

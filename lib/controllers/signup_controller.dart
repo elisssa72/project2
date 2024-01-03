@@ -19,7 +19,7 @@ class SignupController extends GetxController {
   @override
   void onInit() {
     // TODO: implement onInit
-    super.onInit();
+    super.onInit();   //initialize all controllers
 
     nameController = TextEditingController();
     contactController = TextEditingController();
@@ -38,11 +38,11 @@ class SignupController extends GetxController {
     addressController.dispose();
     emailController.dispose();
     passwordController.dispose();
-    confirmPasswordController.dispose();
+    confirmPasswordController.dispose();  //clean
   }
 
   checkSignup() {
-    if (nameController.text.isEmpty) {
+    if (nameController.text.isEmpty) {    //check if empty
       customSnackbar("Error", "Name is required", "error");
     } else if (addressController.text.isEmpty) {
       customSnackbar("Error", "Address is required", "error");
@@ -64,19 +64,23 @@ class SignupController extends GetxController {
   signup() async {
     var response = await http.post(Uri.parse(baseurl + 'signup.php'), body: {
       "name": nameController.text,
-      "contact": contactController.text,    //get data from served based on url
+      "contact": contactController.text,    //get data from server based on url
       "address": addressController.text,
       "email": emailController.text,
       "password": passwordController.text,
     });
 
-    var res = await json.decode(response.body);
+    var res = await json.decode(response.body);  //decodes
 
     if (res['success']) {
-      customSnackbar("Success", res['message'], "success");
+      customSnackbar("Success", res['message'], "success");   //go login
       Get.offAllNamed(GetRoutes.login);
     } else {
-      customSnackbar("Error", res['message'], "error");
+      customSnackbar("Error", res['message'], "error"); //error
     }
   }
 }
+
+//so it sends data to the signup.php which do a validation ,
+// if email is used it didn't add it to db else it add it and success=true
+//show snack message

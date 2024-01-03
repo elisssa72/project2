@@ -31,20 +31,20 @@ class LoginController extends GetxController {
 
   @override
   void onClose() {
-    // TODO: implement onClose
+    // TODO: implement onClose   is called when controllers are closed
     super.onClose();
     emailController.dispose();
     passwordController.dispose();  //clean up
   }
 
   checkLogin() {
-    if (emailController.text.isEmpty ||
-        GetUtils.isEmail(emailController.text) == false) {
+    if (emailController.text.isEmpty || //if empty
+        GetUtils.isEmail(emailController.text) == false) {    //not email format
       customSnackbar("Error", "A Valid email is required", "error");   //check validation
     } else if (passwordController.text.isEmpty) {
       customSnackbar("Error", "Password is required", "error");
     } else {
-      Get.showOverlay(
+      Get.showOverlay(  //show loading spinner
           asyncFunction: () => login(), loadingWidget: const Loader());
     }
   }

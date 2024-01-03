@@ -35,7 +35,7 @@ class HomeScreen extends StatelessWidget {
                 showDialog(
                     context: context,
                     builder: (context) => const Dialog(
-                          child: ManipulateTodo(),
+                          child: ManipulateTodo(),    //didn't take parameter so edit =false so add action
                         ));
               },
               icon: const FaIcon(
@@ -49,25 +49,25 @@ class HomeScreen extends StatelessWidget {
                   context: context,
                   builder: (context) => AlertDialog(
                     title: const Text("Logout?"),
-                    content: const Text("Are you aure you want to logout?"),
+                    content: const Text("Are you sure you want to logout?"),
                     actions: [
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(primary: Colors.red),
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.pop(context);   //pop so go back to the todo page
                           },
                           child: const Text("Cancel")),
                       ElevatedButton(
                           onPressed: () async {
                             await SharedPrefs().removeUser();
-                            Get.offAllNamed(GetRoutes.login);
+                            Get.offAllNamed(GetRoutes.login);    //takes to login page
                           },
                           child: const Text("Confirm")),
                     ],
                   ),
                 );
               },
-              icon: const FaIcon(
+              icon: const FaIcon(   //icon of logout
                 FontAwesomeIcons.arrowRightFromBracket,
                 color: Colors.black,
               ),
@@ -80,13 +80,13 @@ class HomeScreen extends StatelessWidget {
             return Column(
               children: [
                 CustomSearch(onChanged: (val) {
-                  controller.search(val);
+                  controller.search(val);    // the search
                 }),
                 const SizedBox(
                   height: 30,
                 ),
                 Expanded(
-                    child: SingleChildScrollView(
+                    child: SingleChildScrollView(  //allow scrolling
                   child: Column(
                     children: controller.filteredTodo
                         .map((todo) => Slidable(
@@ -94,10 +94,10 @@ class HomeScreen extends StatelessWidget {
                               endActionPane: ActionPane(
                                   motion: const ScrollMotion(),
                                   children: [
-                                    SlidableAction(
+                                    SlidableAction(  //edit label
                                       onPressed: (context) {
                                         controller.titleController.text =
-                                            todo.title!;
+                                            todo.title!;    //title
                                         controller.descriptionController.text =
                                             todo.description!;
                                         controller.update();
@@ -107,13 +107,13 @@ class HomeScreen extends StatelessWidget {
                                                   child: ManipulateTodo(
                                                       edit: true, id: todo.id!),
                                                 ));
-                                      },
+                                      }, //here for the edit we use the method to change it
                                       backgroundColor: const Color(0xff8394FF),
                                       foregroundColor: Colors.white,
                                       icon: FontAwesomeIcons.pencil,
                                       label: "Edit",
                                     ),
-                                    SlidableAction(
+                                    SlidableAction(  //delete label
                                       onPressed: (context) {
                                         showDialog(
                                             context: context,
@@ -121,7 +121,7 @@ class HomeScreen extends StatelessWidget {
                                                   title: const Text(
                                                       "Delete Todo?"),
                                                   content: const Text(
-                                                      "Are you aure you want to delete this todo?"),
+                                                      "Are you sure you want to delete this todo?"),
                                                   actions: [
                                                     ElevatedButton(
                                                         style: ElevatedButton
@@ -130,7 +130,7 @@ class HomeScreen extends StatelessWidget {
                                                                     Colors.red),
                                                         onPressed: () {
                                                           Navigator.pop(
-                                                              context);
+                                                              context);  //if cancel go back but it stays
                                                         },
                                                         child: const Text(
                                                             "Cancel")),
@@ -144,9 +144,9 @@ class HomeScreen extends StatelessWidget {
                                                               loadingWidget:
                                                                   const Loader());
                                                           Navigator.pop(
-                                                              context);
+                                                              context); //go back and its been deleted
                                                         },
-                                                        child: const Text(
+                                                        child: const Text(  //if delte
                                                             "Confirm")),
                                                   ],
                                                 ));
@@ -168,7 +168,7 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class TodoTile extends StatelessWidget {
+class TodoTile extends StatelessWidget {   //design of each todo
   const TodoTile({Key? key, required this.todo}) : super(key: key);
 
   final Todo todo;
@@ -226,10 +226,12 @@ class TodoTile extends StatelessWidget {
 }
 
 class ManipulateTodo extends StatelessWidget {
-  const ManipulateTodo({Key? key, this.edit = false, this.id = ""})
+  const ManipulateTodo({Key? key, this.edit = false, this.id = ""})  //for the edit
       : super(key: key);
   final bool edit;
   final String id;
+  //for the edit  since add doesnt
+  // change the edit it will be initially false so it will take the add action
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -263,18 +265,18 @@ class ManipulateTodo extends StatelessWidget {
               height: 30,
             ),
             CustomButton(
-                label: edit ? "Edit" : "Add",
+                label: edit ? "Edit" : "Add",  //if label=edit
                 onPressed: () async {
-                  if (!edit) {
+                  if (!edit) {  //if not edit so add
                     await Get.showOverlay(
-                        asyncFunction: () => controller.addTodo(),
+                        asyncFunction: () => controller.addTodo(),  // go to add controller
                         loadingWidget: const Loader());
                   } else {
-                    await Get.showOverlay(
-                        asyncFunction: () => controller.editTodo(id),
+                    await Get.showOverlay(  //if edit
+                        asyncFunction: () => controller.editTodo(id), //edit
                         loadingWidget: const Loader());
                   }
-                  Navigator.pop(context);
+                  Navigator.pop(context);  //when edited or added go back
                 }),
           ],
         );

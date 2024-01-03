@@ -54,7 +54,7 @@ class LoginScreen extends StatelessWidget {
               CustomButton(
                 label: "Login",
                 onPressed: () {
-                  controller.checkLogin();
+                  controller.checkLogin();   //go to checklogin
                 },
               ),
               const SizedBox(
@@ -75,7 +75,7 @@ class LoginScreen extends StatelessWidget {
                       text: 'Sign up',
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          Get.toNamed(GetRoutes.signup);
+                          Get.toNamed(GetRoutes.signup);  //go to sign up
                         },
                       style: const TextStyle(
                         color: Color(0xff6b7afc),
